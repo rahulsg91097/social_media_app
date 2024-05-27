@@ -1,0 +1,14 @@
+<!-- main/templates/main/comment_post.html -->
+{% extends 'main/base.html' %}
+
+{% block title %}Comment on Post{% endblock %}
+
+{% block content %}
+    <h1>Comment on Post</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

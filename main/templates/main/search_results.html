@@ -1,0 +1,25 @@
+<!-- main/templates/main/search_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <form method="post" action="{% url 'user_search' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for user in results %}
+            <li>
+                <a href="{% url 'user_profile' user.pk %}">{{ user.username }}</a>
+            </li>
+        {% empty %}
+            <li>No users found</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

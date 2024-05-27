@@ -1,0 +1,40 @@
+<!-- main/templates/main/home.html -->
+{% extends 'main/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Social Media App</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'user_profile' post.user.pk %}">{{ post.user.username }}</a>: {{ post.content }}
+                <br>
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image" style="max-width: 100%; height: auto;">
+                <br>
+                {% endif %}
+                <a href="{% url 'like_post' post.pk %}">
+                    {% if post.pk in liked_posts %}
+                        Unlike
+                    {% else %}
+                        Like
+                    {% endif %}
+                    ({{ post.likes.count }})
+                </a>
+                <br>
+                <a href="{% url 'comment_post' post.pk %}">Comment</a>
+                <ul>
+                    {% for comment in post.comments.all %}
+                        <li>
+                            {{ comment.user.username }}: {{ comment.content }}
+                            {% if comment.user == request.user or comment.post.user == request.user %}
+                                <a href="{% url 'delete_comment' comment.pk %}">Delete</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

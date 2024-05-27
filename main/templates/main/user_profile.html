@@ -1,0 +1,36 @@
+<!-- main/templates/main/user_profile.html -->
+{% extends 'main/base.html' %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+    <h1>{{ user.username }}</h1>
+    <p>{{ user.bio }}</p>
+
+    {% if request.user != user %}
+        {% if is_following %}
+            <a href="{% url 'unfollow_user' user.id %}">Unfollow</a>
+        {% else %}
+            <a href="{% url 'follow_user' user.id %}">Follow</a>
+        {% endif %}
+    {% endif %}
+
+    <ul>
+        <li>Posts count: {{ num_posts }}</li>
+        <li>Followers: {{ num_followers }}</li>
+        <li>Following: {{ num_following }}</li>
+    </ul>
+
+    <h2>Posts</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <p>{{ post.content }}</p>
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image" style="max-width: 100%; height: auto;">
+                <br>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
